@@ -1,0 +1,26 @@
+<odoo>
+	<data>
+
+		<template id="AuthSuccess" name="AuthSuccess">
+			<t t-call="web.layout">
+				<div class="wrap align-center">
+					<h1>SUCCESS</h1>
+					<p>
+						<span> TOKEN VALIDATED</span>
+					</p>
+				</div>
+			</t>
+		</template>
+		<template id="AuthFailed" name="AuthFailed">
+			<t t-call="web.layout">
+				<div class="wrap align-center">
+					<h1>ERROR</h1>
+					<p>
+						<t t-esc="error" />
+					</p>
+				</div>
+			</t>
+		</template>
+
+	</data>
+</odoo>

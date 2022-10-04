@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_imanis_spreadsheet_sync,Spreadsheet,model_imanis_spreadsheet_sync,base.group_user,1,1,1,1
+access_imanis_spreadsheet_sync_fields,Spreadsheet Fields,model_spreadsheet_sync_fields,base.group_user,1,1,1,1
+access_imanis_sheet_api_credentials,Google Sheet Api Credentials,model_sheet_api_credentials,base.group_user,1,1,1,1
+access_imanis_sheet_api_credentials_loader,Google Sheet Api Credentials Loades,model_sheet_api_credentials,base.group_user,1,1,1,1
+access_imanis_sheet_api_credentialsadmin,Google Sheet Api Credentials,model_google_json_credentials,base.group_system,1,1,1,1
+access_imanis_spreadsheet_filter,Google Sheet Sync Filter,model_spreadsheet_filter,base.group_system,1,1,1,1

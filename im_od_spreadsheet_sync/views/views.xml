@@ -1,0 +1,234 @@
+<odoo>
+	<data>
+		<record model="ir.ui.view" id="im_od_spreadsheet_sync_tree">
+			<field name="name">im_od_spreadsheet_sync list</field>
+			<field name="model">imanis.spreadsheet.sync</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+					<field name="modelsync_id" />
+					<field name="spreadsheet_id" />
+					<field name="sheet_id" />
+					<field name="spreadsheet_link" widget="url" />
+				</tree>
+			</field>
+		</record>
+		<record model="ir.ui.view"
+			id="im_od_spreadsheet_sheet_api_tree">
+			<field name="name">Google Sheets API Tree</field>
+			<field name="model">sheet.api.credentials</field>
+			<field name="arch" type="xml">
+				<tree editable="bottom">
+					<field name="email" />
+					<field name="json_file" />
+					<field name="valid" />
+					<field name="live" />
+					<button string="Activate" class="btn btn-primary"
+						name="activate" type="object"
+						attrs="{'invisible':['|',('live','=',True),('json_file','=',False)]}" />
+				</tree>
+			</field>
+		</record>
+		<record model="ir.ui.view"
+			id="im_od_spreadsheet_sheet_api_form">
+			<field name="name">Google Sheets API Form</field>
+			<field name="model">sheet.api.credentials</field>
+			<field name="arch" type="xml">
+				<form>
+					<header>
+						<button string="Activate" class="btn btn-primary"
+							name="activate" type="object"
+							attrs="{'invisible':['|',('live','=',True),('json_file','=',False)]}" />
+					</header>
+					<sheet>
+						<group>
+							<group>
+								<field name="email" />
+								<field name="json_file" />
+							</group>
+							<group>
+								<field name="valid" readonly="1" />
+								<field name="live" readonly="1" />
+							</group>
+						</group>
+						<group string="Google Sheet Api configuration">
+							<group string="1">
+								<span>Go to https://console.cloud.google.com/apis/dashboard and
+									click on "ENABLE APIS SERVICES
+								</span>
+								<br />
+								<span>In search box type : spreadsheet </span>
+								<br />
+								<span>Select : Google Sheet Api and enable it </span>
+								<br />
+								<span>Go to Credentials and click on CREATE CREDENTIALS </span>
+								<br />
+								<span>Choose 0Auth Client ID </span>
+								<br />
+							</group>
+							<group string="2">
+								<span>Application type : Web Application</span>
+								<br />
+								<span>Name : Your odoo name </span>
+								<br />
+								<span>Authorised JavaScript origins : ADD URL </span>
+								<field name="origin_domain" nolabel="1" />
+								<span>Authorised Redirect URLS: ADD URL </span>
+								<field name="redirect_url" nolabel="1" />
+								<span>Create and edit the OAuth 2.0 Client IDs , Download the
+									JSON file
+								</span>
+								<br />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="im_od_spreadsheet_sync_form">
+			<field name="name">im_od_spreadsheet_sync form</field>
+			<field name="model">imanis.spreadsheet.sync</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<group>
+								<field name="name"
+									attrs="{'readonly':[('spreadsheet_id','!=',False)],'required':[('pure_sql','=',True)]}" />
+								<field name="modelsync_id"
+									attrs="{'readonly':[('spreadsheet_id','!=',False)],'required':[('pure_sql','=',False)],'invisible':[('pure_sql','=',True)]}" />
+								<field name="sheet_name"
+									attrs="{'readonly':[('spreadsheet_id','!=',False)]}" />
+								<field name="pure_sql"
+									attrs="{'readonly':[('spreadsheet_id','!=',False)]}" />
+							</group>
+							<group>
+								<field name="spreadsheet_id" readonly="1" />
+								<field name="sheet_id" readonly="1" />
+								<field name="spreadsheet_link" widget="url" />
+								<button string="Manual Sync" class="btn btn-primary"
+									name="sync_spreadsheet" type="object"
+									attrs="{'invisible':[('spreadsheet_id','=',False)]}" />
+							</group>
+						</group>
+						<notebook>
+							<!-- <page string="Query Builder" attrs="{'invisible':[('pure_sql','=',True)]}"> 
+								<field name="query_builder_ids"> <tree editable="bottom"> <field name="sheet_id" 
+								invisible="1" /> <field name="relation_type" /> <field name="model_id" /> 
+								<field name="relation_field_id" domain="[('model_id','=',model_id)]" options="{'no_quick_create': 
+								True, 'no_create_edit' : True,'no_create':True}" attrs="{'readonly':[('relation_type','=','base')],'required':[('relation_type','=','join')]}"/> 
+								</tree> </field> </page> -->
+							<page string="Fields (Spreadsheet Columns)"
+								attrs="{'invisible':[('pure_sql','=',True)]}">
+								<field name="model_fields_ids"
+									domain="[('modelsync_id','=',modelsync_id)]"
+									context="{'default_modelsync_id':modelsync_id}">
+									<tree editable="bottom">
+										<field name="sheet_id" invisible="1" />
+										<field name="displayfield_id_domain" invisible="1" />
+										<field name="sequence" widget="handle" />
+										<field name="modelsync_id"
+											context="{'id':parent.modelsync_id}" invisible="1" />
+										<field name="field_id"
+											domain="[('model_id','=',modelsync_id)]" />
+										<field name="displayfield_id"
+											domain="displayfield_id_domain" required="1"
+											options="{'no_quick_create': True, 'no_create_edit' : True,'no_create':True}" />
+										<field name="filter_visibility" />
+									</tree>
+								</field>
+							</page>
+							<page string="Filter"
+								attrs="{'invisible':[('pure_sql','=',True)]}">
+								<group>
+									<group>
+										<field name="filter_type" required="1"/>
+									</group>
+									<group colspan="3">
+										<field name="filter_string" />
+									</group>
+								</group>
+								<group string="Filters">
+									<field name="filter_ids" nolabel="1">
+										<tree editable="bottom">
+											<field name="sheet_id" invisible="1" />
+											<field name="displayfield_id_domain" invisible="1" />
+											<field name="field_id" required="1"
+												domain="displayfield_id_domain"
+												options="{'no_quick_create': True, 'no_create_edit' : True,'no_create':True}" />
+											<field name="filter_operation" required="1" />
+											<field name="value_type" invisible="1"/>
+											<field name="value_field_id" invisible="1"
+												attrs="{'required':[('value_type','=','field')],'readonly':[('value_type','!=','field')]}" />
+											<field name="value"
+												attrs="{'required':[('value_type','=','value')],'readonly':[('value_type','!=','value')]}" />
+											<field name="filter_string" />
+										</tree>
+									</field>
+								</group>
+							</page>
+							<page string="Preview"
+								attrs="{'invisible':[('pure_sql','=',True)]}">
+								<button name="test_live_query" type="object"
+									string="Test Query" class="oe_highlight" />
+								<div style="width:100%;overflow: auto;">
+									<group>
+										<group colspan="4">
+											<field name="html_result" readonly="1" nolabel="1" />
+										</group>
+									</group>
+								</div>
+							</page>
+							<page string="SQL QUERY"
+								attrs="{'invisible':[('pure_sql','=',False)]}">
+								<group>
+									<field name="search_query"
+										placeholder="SELECT * FROM res_partner"
+										attrs="{'required':[('pure_sql','=',True)]}" />
+								</group>
+								<button name="test_query" type="object"
+									string="Test Query" class="oe_highlight" />
+								<div style="width:100%;overflow: auto;">
+									<group>
+										<group colspan="4">
+											<field name="html_result" readonly="1" nolabel="1" />
+										</group>
+									</group>
+								</div>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window"
+			id="im_od_spreadsheet_sync_action_window">
+			<field name="name">SpreadSheets Sync</field>
+			<field name="res_model">imanis.spreadsheet.sync</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<record model="ir.actions.act_window"
+			id="im_od_sheet_api_action_window">
+			<field name="name">Google Sheet Api Credentials</field>
+			<field name="res_model">sheet.api.credentials</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+		<menuitem name="Google SpreadSheets"
+			id="imanis_google_spreadsheets_settings_menu" sequence="3"
+			parent="base.menu_administration" />
+		<menuitem name="Sheet APi Credentials"
+			id="imanis_google_sheet_api_cred_settings_menu" sequence="10"
+			parent="imanis_google_spreadsheets_settings_menu"
+			action="im_od_sheet_api_action_window" />
+		<menuitem name="Google Sheets Live"
+			id="imanis_google_spreadsheets_live_menu" sequence="5"
+			web_icon="im_od_spreadsheet_sync,static/description/sync.png" />
+		<menuitem name="SpreadSheets Sync"
+			id="imanis_google_spreadsheet_sync_settings_menu" sequence="4"
+			parent="imanis_google_spreadsheets_live_menu"
+			action="im_od_spreadsheet_sync_action_window" />
+	</data>
+</odoo>

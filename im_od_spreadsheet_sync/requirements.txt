@@ -1,0 +1,6 @@
+testresources==2.0.1
+google_api_python_client==2.36.0
+google-auth-httplib2==0.1.0
+google_auth_oauthlib==0.4.6
+protobuf==3.19.3
+six==1.16.0

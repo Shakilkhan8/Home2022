@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="res_config_settings_view_form" model="ir.ui.view">
+		<field name="name">res.config.settings.view.form.inherit.google.spreadsheet
+		</field>
+		<field name="model">res.config.settings</field>
+		<field name="inherit_id"
+			ref="base_setup.res_config_settings_view_form" />
+		<field name="arch" type="xml">
+			<xpath
+				expr="//div[contains(@attrs,'module_google_spreadsheet')]"
+				position="inside">
+
+				<div class="content-group mt16">
+					<div class="mt16 ">
+						<span>Load JSon Credentials to activate live Synchronization
+						</span>
+						<field name="is_google_spreadsheet_token_generated"
+							invisible="1" />
+					</div>
+					<div class="mt16">
+						<button string="Load JSON Credentials"
+							class="btn btn-primary" name="action_load_json" type="object"
+							attrs="{'invisible':[('is_google_spreadsheet_token_generated','=',True)]}" />
+					</div>
+					<div class="mt16">
+						<button string="Reload JSON Credentials"
+							class="btn btn-primary" name="action_load_json" type="object"
+							attrs="{'invisible':[('is_google_spreadsheet_token_generated','=',False)]}" />
+					</div>
+				</div>
+			</xpath>
+
+		</field>
+	</record>
+	<record id="google_spreadsheet_auth_code_wizard"
+		model="ir.ui.view">
+		<field name="name">google.spreadsheet.authorization.wizard</field>
+		<field name="model">google.json.credentials</field>
+		<field name="arch" type="xml">
+			<form>
+				<group>
+					<field name="email" placeholder="your Gmail used for Api Account" required="1" />
+					<field name="json_credentials" required="1" />
+				</group>
+				<h2>How to get JSON Credentials (Works with an active domain only)</h2>
+				<div class="row mt16 o_settings_container"
+					id="google_sheet_api_settings">
+					<div class="col-12 col-lg-6 o_setting_box"
+						title="Google Sheet Api Setting." id="api_settings_console">
+						<div class="o_setting_left_pane">
+
+						</div>
+						<div class="o_setting_right_pane">
+							<div class="text-muted">
+								<ul>
+									<li>
+										<span>Got to</span><a href="https://console.cloud.google.com/apis/dashboard"
+											target="new"> <strong>Google Api Platform</strong></a>
+									</li>
+									<li>
+										<span>Click on <strong>ENABLE APIS AND SERVICES</strong></span>
+									</li>
+									<li>
+										<span>Search for <strong>Google Sheet Api</strong></span>
+									</li>
+									<li>
+										<span>Enable the Api</span>
+									</li>
+									<li>
+										<span>Credentials / Create Credentials: <strong>0Auth Client ID</strong></span>
+									</li>
+									<li><span>Which Api are you using?: <strong>Google Sheet Api</strong></span></li>
+									<li><span>Where Will you be calling Api from?: <strong>Web Browser
+									(Javascript)</strong></span></li>
+									<li><span>What data will you be using?: <strong>User data</strong></span></li>
+									<li><span>Application type: <strong>Web Application</strong></span></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 col-lg-6 o_setting_box"
+						groups="base.group_system">
+						<div class="o_setting_right_pane">
+							<label string="Scope" for="scope" />
+							<div class="text-muted">
+								<field name="scope"></field>
+							</div>
+						</div>
+						<div class="o_setting_left_pane">
+
+						</div>
+						<div class="o_setting_right_pane">
+							<label string="Authorized Javascript Origin"
+								for="origin_domain" />
+							<div class="text-muted">
+								<field name="origin_domain"></field>
+							</div>
+						</div>
+						<div class="o_setting_left_pane">
+
+						</div>
+						<div class="o_setting_right_pane">
+							<label string="Authorized redirect Url" for="redirect_url" />
+							<div class="text-muted">
+								<field name="redirect_url"></field>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<footer>
+					<button string="Save Credentials" class="btn btn-primary"
+						name="save_credentials_from_json" data-hotkey="q" type="object" />
+					<button special="cancel" data-hotkey="z" string="Cancel" />
+				</footer>
+			</form>
+		</field>
+	</record>
+</odoo>
