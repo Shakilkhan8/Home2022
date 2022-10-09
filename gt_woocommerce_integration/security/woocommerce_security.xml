@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="gt_woocommerce_integration.group_woocommerce_connector_users" model="res.groups">
+            <field name="name">Woocommerce Connector Users</field>
+        </record>
+
+        <record id="product_attribute_comp_rule" model="ir.rule">
+            <field name="name">Product Attribute multi-company</field>
+            <field name="model_id" ref="model_product_attribute"/>
+            <field name="domain_force">['|', ('company_id', 'in', company_ids), ('company_id', '=', False)]</field>
+        </record>
+
+        <record id="product_attribute_val_comp_rule" model="ir.rule">
+            <field name="name">Product Attribute Value multi-company</field>
+            <field name="model_id" ref="model_product_attribute_value"/>
+            <field name="domain_force">['|', ('company_id', 'in', company_ids), ('company_id', '=', False)]</field>
+        </record>
+
+        <record id="product_category_comp_rule" model="ir.rule">
+            <field name="name">Product Category multi-company</field>
+            <field name="model_id" ref="model_woocom_category"/>
+            <field name="domain_force">['|', ('company_id', 'in', company_ids), ('company_id', '=', False)]</field>
+        </record>
+    </data>
+</openerp>
